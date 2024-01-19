@@ -6,24 +6,24 @@ class node:
         
 def pre_(node):
     print(node.data, end='')
-    if node.left_node != "." and node.left_node !="None":
+    if node.left_node != "." :
         pre_(tree[node.left_node])
-    if node.right_node != "." and node.right_node !="None":
+    if node.right_node != "." :
         pre_(tree[node.right_node])
 
 def in_(node):
     
-    if node.left_node != "." and node.left_node !="None":
+    if node.left_node != ".":
         in_(tree[node.left_node])
     print(node.data, end='')    
-    if node.right_node != "." and node.right_node !="None":
+    if node.right_node != ".":
         in_(tree[node.right_node])
         
 def post_(node):
     
-    if node.left_node != "." and node.left_node !="None" :
+    if node.left_node != "."  :
         post_(tree[node.left_node])
-    if node.right_node != "." and node.right_node !="None":
+    if node.right_node != "." :
         post_(tree[node.right_node])
     print(node.data, end='')
 
