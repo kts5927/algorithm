@@ -34,7 +34,7 @@ for i in range(n):
     data,left_node,right_node = input().split()
     tree[data] = node(data,left_node,right_node)
     
-    
+    [k for k, v in node.items() if v == '']
     
 
 pre_(tree['A'])
