@@ -10,7 +10,7 @@ for i in range(E):
 lists.sort()
 
 def search(computer:list,lists:list,i:int):
-    
+
     if computer[lists[i][0]] != computer[lists[i][1]]:
         computer[lists[i][1]] = True
         computer[lists[i][0]] = True
