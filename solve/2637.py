@@ -26,7 +26,8 @@ while destination.count(0) < N:
                     destination[j] -= 1
 seq.popleft()
 
-
+for i in lists:
+    print(i)
 while True:
     a = seq.popleft()
     for i in range(1,N+1):
