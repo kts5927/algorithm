@@ -5,7 +5,6 @@ buildings = []
 aa = []
 aa.append(0)
 def calculate(buildings,count,shadow,i,j,N):
-    
 
     if i > 0 and buildings[i-1][j] == 1 and shadow[i-1][j] == 0:
         shadow[i-1][j] = count
