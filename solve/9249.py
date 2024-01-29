@@ -16,6 +16,7 @@ ng[n] = -1
 
 t = 1
 while t<n:
+    
     suffix.sort(key = lambda x:(g[x],g[min(x+t,n)]))
     for i in range(1,n):
         p,q = suffix[i-1], suffix[i]

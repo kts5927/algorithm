@@ -18,3 +18,4 @@ for i in range(K):
         ans += 1
 
 print(ans)
+
