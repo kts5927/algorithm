@@ -1,55 +1,47 @@
-import sys
 from collections import deque
+import sys
 
-def melt_cheese(N, M, cheese):
-    di = [1, -1, 0, 0]
-    dj = [0, 0, 1, -1]
+N,M=map(int,sys.stdin.readline().split())
+arr = [list(map(int,sys.stdin.readline().split())) for _ in range(N)]
 
-    air = deque()
-    air.append([0, 0])
-    cloud = [[0 for _ in range(M)] for __ in range(N)]
-    visit = [[False for _ in range(M)] for __ in range(N)]
-
-    while air:
-        x, y = air.popleft()
-
-        for _ in range(4):
-            dx = x + di[_]
-            dy = y + dj[_]
-            if 0 <= dx < N and 0 <= dy < M and not visit[dx][dy] and cheese[dx][dy] != 1:
-                visit[dx][dy] = True
-                air.append([dx, dy])
-                cloud[dx][dy] = 2
-
-    shadow = [[0 for _ in range(M)] for __ in range(N)]
-    for i in range(N):
-        for j in range(M):
-            for _ in range(4):
-                dx = i + di[_]
-                dy = j + dj[_]
-                if 0 <= dx < N and 0 <= dy < M and cloud[dx][dy] == 2:
-                    shadow[i][j] += 1
-
-    for i in range(N):
-        for j in range(M):
-            if shadow[i][j] >= 2:
-                cheese[i][j] = 0
-
-    return cheese
-
-def main():
-    N, M = map(int, input().split())
-    cheese = [list(map(int, input().split())) for _ in range(N)]
-
-    time = 1
+def bfs(arr):
+    dx = [1,-1,0,0]
+    dy = [0,0,1,-1]
+    count = 0
+    lista = deque()
+    
     while True:
-        melted_cheese = melt_cheese(N, M, cheese)
-        if sum(sum(row) for row in melted_cheese) == 0:
+        lista.append((0,0))
+        while lista:
+            i,j = lista.popleft()
+            if arr[i][j] == 0:
+                arr[i][j] = 2
+                for _ in range(4):
+                    x = dx[_] + i
+                    y = dy[_] + j
+                    if -1 < x < N and -1 < y < M and arr[x][y] == 0 :
+                        lista.append((x,y))
+
+
+        for i in range(N):
+            for j in range(M):
+                
+                if arr[i][j] == 1:
+                    number = 4
+                    for _ in range(4):
+                        x = dx[_] + i
+                        y = dy[_] + j
+                        if arr[x][y] ==2:
+                            number -= 1
+                    if number <= 2:
+                        arr[i][j] = 0
+        for i in range(N):
+            for j in range(M):
+                if arr[i][j] == 2:
+                    arr[i][j] = 0
+        count += 1 
+        if sum(sum(row) for row in arr) == 0:
+            print(count)
             break
-        cheese = melted_cheese
-        time += 1
-
-    print(time)
-
-if __name__ == "__main__":
-    main()
+   
+bfs(arr)                
