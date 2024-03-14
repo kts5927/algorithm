@@ -14,7 +14,7 @@ for i in range(1, N):
     for j in range(10):          
         for k in range(1024):  
             if j < 9:  
-                dp_next[j][k | (1 << j)] = (dp_next[j][k | (1 << j)] + dp[j+1][k]) % mod  
+                dp_next[j][k | (1 << j)] = (dp_next[j][k | (1 << j)] + dp[j + 1][k]) % mod  
             if j > 0:  
                 dp_next[j][k | (1 << j)] = (dp_next[j][k | (1 << j)] + dp[j - 1][k]) % mod  
 
