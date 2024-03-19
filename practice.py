@@ -2,78 +2,81 @@
 
 # 1562
 # 1019
-# 1006
+# 1006 <- 어려움
 # https://www.acmicpc.net/problem/16953 그리디
+import sys
+from collections import deque
+
+N = int(sys.stdin.readline())
+dx = [1 , -1 , 0 , 0]
+dy = [0 , 0 , 1 , -1]
+
+for _ in range(N):
+    h , w = map(int,sys.stdin.readline().split())
+    building = []
+    building = [['.'] + list(sys.stdin.readline().strip()) + ['.'] for _ in range(h)]
+    building.insert(0, ['.'] * (w + 2))
+    building.append(['.'] * (w + 2))
+    key = {}
+    for i in input():
+        if i.isalpha():
+            key[i] = True
+    lst = []
+    score = 0
+    while True:
+        diff = 0
+        # lis , score = find_entry(h , w , key , building , score)
+        lis = deque()
+        lis.append([0,0])
+        shadow = [[False for k in range(w+2)] for k in range(h+2)]
+        door = []
+        to_list = False    
 
 
-# import sys
-# from collections import deque
-# N , M , K = map(int,sys.stdin.readline().split())
-# wall = [list(map(int,sys.stdin.readline().strip())) for _ in range(N)]
-# shadow = [[[False for _ in range(M)] for _ in range(N)] for _ in range(K)]
-# location = deque()
-# location.append([0 , 0 , 0 , 0])
-
-# dx = [1 , -1 , 0 , 0]
-# dy = [0 , 0 , 1 , -1]
-# while location:
-#     i , j , k , count= location.popleft()
-#     shadow[k][j][i] = True
-#     if i == M-1 and j == N-1:
-#         print(count)
-#         break	
-	
-#     for a in range(4):
-#         x = dx[a] + i
-#         y = dy[a] + j
-		
-#         if 0 <= x < M and 0 <= y < N and not shadow[k][y][x]:
-#             print(x , y , count , k)
-#             if wall[x][y] == 0 :
-#                 location.append([x , y , k , count + 1 ])
-			
-#             elif wall[x][y] == 1 and k < K-1:
-#                 print('here!')
-#                 location.append([x , y , k+1 , count + 1])
+        while lis : 
+            i , j = lis.popleft()
+            for k in range(4):
+                if to_list :
+                    break
+                x = dx[k] + j
+                y = dy[k] + i
+                
+                if 0 <= x < w+2 and 0 <= y < h+2 and building[y][x] != '*' and not shadow[y][x]:
+                    if building[y][x] == '$':
+                        building[y][x] = '.'
+                        score += 1
+                        lis.append([y , x])
+                        shadow[y][x] = True
+                        diff += 1
+                        
+                    elif building[y][x] == '.':
+                        lis.append([y , x])
+                        shadow[i][j] = True
 
 
-from collections import defaultdict
+                    elif ord('A') <= ord(building[y][x]) <= ord('Z'):
+                        if building[y][x].lower() in key:
+                            building[y][x] = '.'
+                            lis.append([y , x])
+                            shadow[y][x] = True
+                            diff += 1
+                        else:
+                            door.append([y , x])
+                        
+                    elif ord('a') <= ord(building[y][x]) <= ord('z'):
+                        key[building[y][x]] = True
+                        building[y][x] = '.'
+                        lis.append([y , x])
+                        shadow[y][x] = True
+                        for q in door:
+                            if building[q[0]][q[1]].lower() in key:
+                                building[q[0]][q[1]] = '.'
+                                lis.append([q[0] , q[1]])
+                                shadow[q[0]][q[1]] = True
+                        diff += 1
 
-def max_independent_set(graph, n, start=1):
-    visited = [False] * (n + 1)
-    visited[start] = True
-    independent_set = set([start])
-    stack = [start]
-
-    while stack:
-        curr = stack.pop()
-        for neighbor in graph[curr]:
-            if not visited[abs(neighbor)]:
-                visited[abs(neighbor)] = True
-                if neighbor > 0:
-                    independent_set.add(neighbor)
-                    stack.append(neighbor)
-
-    return independent_set
-
-def soln(n, m, votes):
-    graph = defaultdict(list)
-    for a, b in votes:
-        graph[-a].append(b)
-        graph[-b].append(a)
-
-    independent_set = max_independent_set(graph, n)
-    if 1 in independent_set:
-        return "yes"
-    else:
-        return "no"
-
-if __name__ == "__main__":
-    test_cases = int(input())
-    for _ in range(test_cases):
-        n, m = map(int, input().split())
-        votes = []
-        for _ in range(m):
-            a, b = map(int, input().split())
-            votes.append((a, b))
-        print(soln(n, m, votes))
+        if diff == 0:
+            break
+        
+    # print(key)
+    print(score)
