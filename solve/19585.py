@@ -21,6 +21,8 @@ for _ in range(C):
     
 names = {input().strip() for i in range(N)}
 
+print(colors)
+
 for _ in range(int(input())):
     print("Yes" if check(input().strip()) else "No")
     
