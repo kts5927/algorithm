@@ -1,5 +1,5 @@
 # 백준 111 제목 티어 https://www.acmicpc.net/problem/
-
+# 오늘의 잔디 추천 :  https://www.acmicpc.net/problem/
 # 1562
 # 1019
 # 1006 <- 어려움
@@ -13,12 +13,9 @@
 # from itertools import permutations
 
 
-def aaa():
-    if~~
-        for a in a :
-            list - a
-            aaa(list)
-            list + a
-            
-            
-        return aa
+from collections import deque
+
+lst = deque()
+lst.append(11)
+lst.appendleft(12)
+print(lst.pop())
