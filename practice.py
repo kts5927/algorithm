@@ -13,9 +13,36 @@
 # from itertools import permutations
 
 
-from collections import deque
+def sharkwave (x , y , speed , direction):
+    x_res = x
+    y_res = y
+    
+    if direction == 3 or direction == 4:
+        x_move = dx[direction]*speed
+        if direction == 3:
+            if (x + x_move)%R > 0:
+            
+                if ((x + x_move)%R)//2 == 0:
+                    x_res = (x + x_move)%R
+                else:
+                    x_res = R - (x+x_move)%R
+                    
+            else:
+                x_res = x + x_move
+            
+        if direction == 4:
+            if (x + x_move)%R < 0:
+                if ((x + x_move)%R)%2 == 0:
+                    x_res = R - (x + x_move)//R
+                else:
+                    x_res = (x + x_move)//R
+            else:
+                x_res = x+x_move
+    return x_res , y_res
+                
+R = 4                
+                
+dx = [0 , 0 , 0 , 1 , -1]
+dy = [0 , 1 , -1 , 0 , 0]
 
-lst = deque()
-lst.append(11)
-lst.appendleft(12)
-print(lst.pop())
+print(sharkwave(1 , 2 , 5 , 3))
