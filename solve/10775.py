@@ -20,6 +20,7 @@ P = int(sys.stdin.readline().strip())
 parent = [i for i in range(G + 1)]
 
 count = 0
+
 for _ in range(P):
     gi = int(sys.stdin.readline().strip())
     root = find_parent(parent, gi)

@@ -1,29 +1,29 @@
 import sys
 
-M = int(sys.stdin.readline())
-S = []
+m = int(sys.stdin.readline())
+S = set()
 
-for _ in range(M):
-    string = list(map(str , sys.stdin.readline().split()))
-    if len(string) == 2:
-        a = string[0]
-        b = string[1]
-        
-        if a == 'add' and 1 <= int(b) <= 20:
-            S.append(int(b))
-        elif a == 'remove' and int(b) in S and 1 <= int(b) <= 20:
-            S.remove(int(b))
-        elif a == 'check' and 1 <= int(b) <= 20:
-            if int(b) in S:
-                print(1)
-            else :
-                print(0)
-        elif a == 'toggle' and 1 <= int(b) <= 20:
-            if int(b) in S:
-                S.remove(int(b))
+for _ in range(m):
+    temp = sys.stdin.readline().strip().split()
+    
+    if len(temp) == 1:
+        if temp[0] == "all":
+            S = set([i for i in range(1, 21)])
+        else:
+            S = set()
+    
+    else:
+        func, x = temp[0], temp[1]
+        x = int(x)
+
+        if func == "add":
+            S.add(x)
+        elif func == "remove":
+            S.discard(x)
+        elif func == "check":
+            print(1 if x in S else 0)
+        elif func == "toggle":
+            if x in S:
+                S.discard(x)
             else:
-                S.append(int(b))
-    if string == 'empty':
-        S = []
-    elif string == 'all':
-        S = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+                S.add(x)

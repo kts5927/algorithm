@@ -4,7 +4,7 @@
 # 1019
 # 1006 <- 어려움
 # https://www.acmicpc.net/problem/16953 그리디
-
+# 낚시왕
 # 딕셔너리 , set 꼭 공부하기
 # sum 함수는 시간 엄청 잡아먹음
 # string to list
