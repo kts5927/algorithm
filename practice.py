@@ -11,6 +11,3 @@
 # import - heapq
 # sort(key = lambda x:x*3 , reverse = True)
 # from itertools import permutations
-
-for i in range(5,0,-1):
-    print(i)
