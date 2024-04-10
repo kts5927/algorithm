@@ -1,21 +1,19 @@
-import sys
-N = int(sys.stdin.readline())
-lst = list(map(int,sys.stdin.readline().split()))
+import sys 
 
-a = max(lst)
-cost = [0 for _ in range(a+1)]
+N = int(sys.stdin.readline().strip())
+doll = list(map(int,sys.stdin.readline().split()))
+cost = [0] * (max(doll)+1)
 
-for i in lst:
+for i in doll:
     cost[i] += 1
 
-ans = 0
-for i in range(a,0,-1):
+result = 0
+for i in range(max(doll),0,-1):
     while cost[i] != 0:
         count = 0
-        while cost[i-count] != 0 :
+        while cost[i-count] != 0:
             cost[i-count] -= 1
-            ans += i
+            result += i
             count += 1
 
-
-print(ans)
+print(result)
