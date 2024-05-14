@@ -1,55 +1,50 @@
 import bisect
-import sys
-N = int(input())
-line = []
-temp = []
-number = []
-def binary(left , right , a , x):
-    while left <= right:
-        mid = (left + right) // 2
-        if a[mid] >= x:
-            right = mid - 1
+
+def find_lis(sequence):
+    lis = []
+    lis_indices = []
+    for i in range(len(sequence)):
+        pos = bisect.bisect_left(lis, sequence[i])
+        if pos == len(lis):
+            lis.append(sequence[i])
         else:
-            left = mid + 1
-    return left
+            lis[pos] = sequence[i]
+        lis_indices.append((pos, sequence[i], i))
+    lis_length = len(lis)
+    lis_result = []
+    for pos, value, idx in reversed(lis_indices):
+        if pos == lis_length - 1:
+            lis_result.append(idx)
+            lis_length -= 1
+    lis_result.reverse()
+    return lis_result
 
-for i in range(N):
-    line.append(list(map(int,sys.stdin.readline().split())))
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    
+    n = int(data[0])
+    wires = [(int(data[i*2+1]), int(data[i*2+2])) for i in range(n)]
+    
+    wires.sort()
+    
+    positions = [b for a, b in wires]
+    
+    lis_indices = find_lis(positions)
+    
+    lis_set = set(lis_indices)
+    
+    result = []
+    for i in range(n):
+        if i not in lis_set:
+            result.append(wires[i][0])
+    
+    result.sort()
+    
+    print(len(result))
+    for num in result:
+        print(num)
 
-line.sort(key= lambda x:x[0])
-location = [line[0][1]]
-number = [-1]*N
-
-for i in range(N):
-    if location[-1] < line[i][1]:
-        number[i] = max(number) + 1
-        location.append(line[i][1])
-    else:
-        
-        x = binary(0,len(location) - 1, location, line[i][1])
-        if line[i][1] > location[x]:
-            location[-1] = line[i][1]
-            
-        else :
-            location[x] = line[i][1]
-            number[i] = x+1
-            
-            
-print(N-len(location))
-r = len(location)
-cal = []
-for i in range(N-1 , -1 , -1):
-    if r == 0:
-        break
-    if number[i] == r:
-        cal.append(line[i])
-        r -= 1
-        
-ans = []
-for i in line:
-    if i not in cal:
-        ans.append(i)
-        
-ans.sort(key = lambda x:x[0])
-for i in range(N-len(location)):
-    print(ans[i][0])
+if __name__ == "__main__":
+    main()
