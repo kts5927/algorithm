@@ -12,4 +12,4 @@
 # import - heapq
 # sort(key = lambda x:x*3 , reverse = True)
 # from itertools import permutations
-print(3%2)
+# print(3%2)
