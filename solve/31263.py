@@ -13,7 +13,6 @@ while lst:
             lst = lst[2:]
             ans += 1
     else:
-        2310
         if lst[2] == '0':
             
             if lst[3] == '0':
