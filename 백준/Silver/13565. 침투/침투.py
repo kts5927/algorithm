@@ -23,6 +23,9 @@ for i in range(M):
                         break
                     cal.append([y,x])
                     lst[y][x] = 1
+                    
+        if ans:
+            break
 
 if ans:
     print('YES')
