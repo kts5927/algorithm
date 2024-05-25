@@ -18,7 +18,7 @@ for i in range(M):
                 x = colum + dx[j]
                 y = raw + dy[j]
                 if 0<=x<M and 0<=y<N and lst[y][x] == 0:
-                    if y == N:
+                    if y == N-1:
                         ans = True
                         break
                     cal.append([y,x])
