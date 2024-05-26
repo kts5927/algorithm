@@ -13,7 +13,7 @@ for i in range(M):
         lst[0][i] = 1
         while cal:
             raw, colum = cal.popleft()
-            
+
             for j in range(4):
                 x = colum + dx[j]
                 y = raw + dy[j]
@@ -23,6 +23,9 @@ for i in range(M):
                         break
                     cal.append([y,x])
                     lst[y][x] = 1
+
+        if ans:
+            break
 
 if ans:
     print('YES')
