@@ -9,6 +9,7 @@ is_odd = True
 
 for i in stick:
     que = deque()
+    
     if is_odd:
         for j in range(len(lst[N-i])):
             if lst[N-i][j] == 'x':
@@ -23,6 +24,11 @@ for i in stick:
                 que.append([N-i,j])
                 is_odd = True
                 break
+    
+    
+    
+    
+    
     
 print(que)
                 
