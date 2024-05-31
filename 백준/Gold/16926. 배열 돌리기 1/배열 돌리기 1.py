@@ -1,44 +1,33 @@
-def rotate_layer(matrix, layer, N, M):
-    top = layer
-    left = layer
-    bottom = N - 1 - layer
-    right = M - 1 - layer
+from sys import stdin
+from collections import deque
 
-    top_left = matrix[top][left]
-    
-    for i in range(left, right):
-        matrix[top][i] = matrix[top][i + 1]
-    
-    for i in range(top, bottom):
-        matrix[i][right] = matrix[i + 1][right]
-    
-    for i in range(right, left, -1):
-        matrix[bottom][i] = matrix[bottom][i - 1]
-    
-    for i in range(bottom, top, -1):
-        matrix[i][left] = matrix[i - 1][left]
-    
-    matrix[top + 1][left] = top_left
+N, M, R = map(int, stdin.readline().split())
 
-def rotate_counterclockwise(matrix):
-    if not matrix or not matrix[0]:
-        return matrix
-    
-    N = len(matrix)
-    M = len(matrix[0])
-    
-    layers = min(N, M) // 2
-    
-    for layer in range(layers):
-        rotate_layer(matrix, layer, N, M)
-    
-    return matrix
+matrix = []
+answer = [[0]*M for _ in range(N)]
+deq = deque()
 
-N , M , R= map(int,input().split())
-matrix = [list(map(int,input().split())) for _ in range(N)]
+for i in range(N):
+    matrix.append(list(stdin.readline().split()))
 
-for i in range(R):
-    matrix = rotate_counterclockwise(matrix)
+loops = min(N, M) // 2
+for i in range(loops):
+    deq.clear()
+    deq.extend(matrix[i][i:M-i])
+    deq.extend([row[M-i-1] for row in matrix[i+1:N-i-1]])
+    deq.extend(matrix[N-i-1][i:M-i][::-1])
+    deq.extend([row[i] for row in matrix[i+1:N-i-1]][::-1])
+    
+    deq.rotate(-R)
+    
+    for j in range(i, M-i):                 # 위쪽
+        answer[i][j] = deq.popleft()
+    for j in range(i+1, N-i-1):             # 오른쪽
+        answer[j][M-i-1] = deq.popleft()
+    for j in range(M-i-1, i-1, -1):           # 아래쪽
+        answer[N-i-1][j] = deq.popleft()  
+    for j in range(N-i-2, i, -1):           # 왼쪽
+        answer[j][i] = deq.popleft()    
 
-for row in matrix:
-    print(*row)
+for line in answer:
+    print(" ".join(line))
