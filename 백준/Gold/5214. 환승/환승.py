@@ -1,9 +1,11 @@
 import sys
-from collections import deque, defaultdict
+from collections import deque
 
 N, K, M = map(int, sys.stdin.readline().split())
-station_to_tubes = defaultdict(list)
-tube_to_stations = defaultdict(list)
+
+# 역과 하이퍼튜브의 연결 정보를 저장할 리스트
+station_to_tubes = [[] for _ in range(N + 1)]
+tube_to_stations = [[] for _ in range(M + 1)]
 
 for tube_id in range(1, M + 1):
     lst = list(map(int, sys.stdin.readline().split()))
@@ -33,3 +35,4 @@ while que:
                     que.append((next_station, count + 1))
 
 print(-1)
+
