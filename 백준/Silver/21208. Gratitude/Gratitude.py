@@ -5,16 +5,16 @@ data = input().splitlines()
 
 N, K = map(int, data[0].split())
 
-hash_table = {}
+count_dict = {}
 
 for i in range(1, 3 * N + 1):
     string = data[i]
-    if string in hash_table:
-        hash_table[string] = (hash_table[string][0] + 1, i)
+    if string in count_dict:
+        count_dict[string] = (count_dict[string][0] + 1, i)
     else:
-        hash_table[string] = (1, i)
+        count_dict[string] = (1, i)
 
-ans = sorted(hash_table.items(), key=lambda x: (-x[1][0], -x[1][1]))
+sorted_items = sorted(count_dict.items(), key=lambda x: (-x[1][0], -x[1][1]))
 
-for i in range(min(K, len(ans))):
-    print(ans[i][0])
+for i in range(min(K, len(sorted_items))):
+    print(sorted_items[i][0])
