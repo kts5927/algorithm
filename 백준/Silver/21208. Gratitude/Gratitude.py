@@ -1,24 +1,20 @@
 import sys
-from collections import defaultdict
 
-def main():
-    input = sys.stdin.read
-    data = input().splitlines()
-    
-    N, K = map(int, data[0].split())
-    
-    gratitude_count = defaultdict(int)
-    last_occurrence = {}
-    
-    for i in range(1, 3 * N + 1):
-        gratitude = data[i]
-        gratitude_count[gratitude] += 1
-        last_occurrence[gratitude] = i
-    
-    sorted_gratitudes = sorted(gratitude_count.keys(), key=lambda x: (-gratitude_count[x], -last_occurrence[x]))
-    
-    for gratitude in sorted_gratitudes[:K]:
-        print(gratitude)
+input = sys.stdin.read
+data = input().splitlines()
 
-if __name__ == "__main__":
-    main()
+N, K = map(int, data[0].split())
+
+hash_table = {}
+
+for i in range(1, 3 * N + 1):
+    string = data[i]
+    if string in hash_table:
+        hash_table[string] = (hash_table[string][0] + 1, i)
+    else:
+        hash_table[string] = (1, i)
+
+ans = sorted(hash_table.items(), key=lambda x: (-x[1][0], -x[1][1]))
+
+for i in range(min(K, len(ans))):
+    print(ans[i][0])
