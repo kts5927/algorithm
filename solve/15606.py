@@ -1,27 +1,38 @@
-def cal(a, b, c):
+from collections import deque
+N = int(input())
+
+def cal(a,b,c):
     return a**2 + b**2 + c**2 + 7 * min(a, b, c)
 
-def find_max(a, b, c, d):
-    ans = 0
-    ans = max(ans, cal(a + d, b, c))
-    ans = max(ans, cal(a, b + d, c))
-    ans = max(ans, cal(a, b, c + d))
-    
-    if d <= 10:
-        for i in range(d + 1):
-            for j in range(d - i + 1):
-                k = d - i - j
-                ans = max(ans, cal(a + i, b + j, c + k))
-                ans = max(ans, cal(a + i, b + k, c + j))
-                ans = max(ans, cal(a + j, b + i, c + k))
-                ans = max(ans, cal(a + j, b + k, c + i))
-                ans = max(ans, cal(a + k, b + i, c + j))
-                ans = max(ans, cal(a + k, b + j, c + i))
-    
-    return ans
+ans = []
+for i in range(N):
+    a , b , c , d = map(int,input().split())
+    while d>0:
+        if d <10:
+            deq = deque()
+            deq.append([a,b,c,d])
+            max_num = [0,0,0,0,0]
+            while deq:
+                A,B,C,D = deq.popleft()
+                if max_num[4] < cal(A,B,C):
+                    max_num = [A,B,C,D,cal(A,B,C)]
+                if D > 0:
+                    deq.append([A+1,B,C,D-1])
+                    deq.append([A,B+1,C,D-1])
+                    deq.append([A,B,C+1,D-1])
+            a = max_num[0]
+            b = max_num[1]
+            c = max_num[2]
+            d = max_num[3]
+        else:
+            if a >= b and a >= c:
+                a += d
+            elif b >= a and b >= c:
+                b += d
+            else:
+                c += d
+            d = 0
+    ans.append(a**2 + b**2 + c**2 + 7 * min(a, b, c))
 
-n = int(input())
-players = [list(map(int, input().split())) for _ in range(n)]
-
-for a, b, c, d in players:
-    print(find_max(a, b, c, d))
+for i in ans:
+    print(i)

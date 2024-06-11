@@ -1,27 +1,37 @@
-def cal(a, b, c):
-    return a**2 + b**2 + c**2 + 7 * min(a, b, c)
+from collections import deque
 
-def find_max(a, b, c, d):
-    ans = 0
-    ans = max(ans, cal(a + d, b, c))
-    ans = max(ans, cal(a, b + d, c))
-    ans = max(ans, cal(a, b, c + d))
-    
-    if d <= 10:
-        for i in range(d + 1):
-            for j in range(d - i + 1):
-                k = d - i - j
-                ans = max(ans, cal(a + i, b + j, c + k))
-                ans = max(ans, cal(a + i, b + k, c + j))
-                ans = max(ans, cal(a + j, b + i, c + k))
-                ans = max(ans, cal(a + j, b + k, c + i))
-                ans = max(ans, cal(a + k, b + i, c + j))
-                ans = max(ans, cal(a + k, b + j, c + i))
-    
-    return ans
+N, M = map(int, input().split())
 
-n = int(input())
-players = [list(map(int, input().split())) for _ in range(n)]
+target = [list(map(int, input().strip())) for _ in range(N)]
+deq = deque()
+for i in range(N):
+    for j in range(M):
+        if target[i][j] == 1:
+            deq.append([i, j])
+ans = (-1, -1)
+max_distance = 10
 
-for a, b, c, d in players:
-    print(find_max(a, b, c, d))
+while deq:
+    x, y = deq.popleft()
+    hit = [0 for _ in range(max_distance)]
+    dup = False
+    for i in range(N):
+        for j in range(M):
+            location = max(abs(y - j), abs(x - i))
+            if target[i][j] == 1:
+                if location < max_distance:
+                    if hit[location] == 0:
+                        hit[location] = 1
+                    elif hit[location] == 1:
+                        dup = True
+                        break
+        if dup:
+            break
+    if sum(hit) == max_distance and not dup:
+        ans = (x, y)
+        break
+
+if ans != (-1, -1):
+    print(ans[0], ans[1])
+else:
+    print(-1)
