@@ -11,7 +11,7 @@ T = int(input())
 arrow = []
 
 for i in range(T):
-    arrow.append(list(map(int, input().split())))
+    arrow.append(list(map(int,sys.stdin.readline().split())))
 
 # x, y 좌표 기준으로 정렬
 arrow.sort()
