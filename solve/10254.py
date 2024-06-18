@@ -33,6 +33,7 @@ for i in range(T):
         cal_2.append(city[i])
     
     cal = cal_1[:-1] + cal_2[:-1]
+    print(cal_1 , cal_2)
     num = len(cal)
 
     MAX = 0
