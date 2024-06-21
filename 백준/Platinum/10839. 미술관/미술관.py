@@ -8,19 +8,13 @@ points = [list(map(int,sys.stdin.readline().split())) for _ in range(T)]
 
 start , end = map(int,sys.stdin.readline().split())
 
-if (start - end) % T in [1, T - 1]:
-    print(2)
-    print(start, end)
-    exit()
-
+cal = []
 check = False
 if start == 0 or (end != 0 and start > end):
     start,end = end,start
     check = True
 
-cal = [start,(start+1)%T]
-
-for i in range(start+2,start+T):
+for i in range(start,start+T):
     i = i%T
 
     while len(cal) >=2 and  ccw(points[cal[-2]],points[cal[-1]],points[i]) >= 0:
