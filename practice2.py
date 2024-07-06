@@ -1,115 +1,73 @@
 import sys
 
-N , M = map(int,sys.stdin.readline().split())
-
-def Rotation(lst , num):
-    cal = []
-    if num == 0:    
-        for i in lst:
-            cal.append([-i[1],i[0]])
-    elif num == 1:
-        for i in lst:
-            cal.append([-i[0],-i[1]])
-    elif num == 2:
-        for i in lst:
-            cal.append([i[1],-i[0]])
-    else:
-        return lst
-    return cal
-
-
-def lst_rev(cal:list):
-    cal.reverse()
-    cal = [[-1 * x for x in row] for row in cal]
-    return cal
-
 def fail(p):
     m, j = len(p), 0
-    pi = [0]*m
+    l = [0]*m
     for i in range(1, m):
         while j > 0 and p[i]!=p[j]:
-            j = pi[j-1]
+            j = l[j-1]
         if p[i] == p[j]:
             j+=1
-            pi[i] = j
-    return pi
-
-def check(word,pattern,kmp):
-    table = fail(pattern)
-    results = 0
-    pat_len = len(pattern)
-    j = 0
-   
-    flag = False
-    for i in range(kmp,kmp+pat_len):
-        if flag:
-            return 0
-        if j == 0 or j == pat_len-1:
-            if word[i]*pattern[j] >= 0 and abs(word[i]) >= abs(pattern[j]):
-                if j == len(pattern)-1:
-                    results+=1
-                    j = table[j]
-                else:
-                    j += 1
-        else:
-            if word[i] != pattern[j]:
-                flag = True
-            j += 1
-    # print(word , pattern , results)
-    return results
-
-def match_conditions(text_vector, pattern_vector, is_first, is_last):
-    if is_first or is_last:
-        return (text_vector[0] * pattern_vector[0] >= 0 and abs(text_vector[0]) >= abs(pattern_vector[0])) and \
-               (text_vector[1] * pattern_vector[1] >= 0 and abs(text_vector[1]) >= abs(pattern_vector[1]))
-    else:
-        return text_vector == pattern_vector
-
-def KMP(pattern):
-    table = fail(pattern)
-    results = 0
-    pat_len = len(pattern)
-    j = 0
+            l[i] = j
+    return l
     
-    for i in range(N - M+2):
+# test1 = 'winlose???winl???w??'
+# test2 = 'win'
+# test1 = '???cab?????'
+# test2 = 'abcab'
+# test1 = 'glo?yto?e??an?'
+# test2 = 'or'
 
-        if j == 0 or j == pat_len-1:
-            if word[i][0]*pattern[j][0] >= 0 and abs(word[i][0]) >= abs(pattern[j][0]) and word[i][1]*pattern[j][1] >= 0 and abs(word[i][1]) >= abs(pattern[j][1]):
-                if j == pat_len-1:
-                    results += 1
-                    j = table[j]
-                else:
-                    j += 1
-            else:
-                j = table[j-1]
-        else:
-            while j > 0 and word[i] != pattern[j] :
-                j = table[j-1]
-            if word[i] == pattern[j]:
-                j += 1
-    # print(word , pattern , results)
-    return results
 
-lst = [list(map(int,sys.stdin.readline().split())) for _ in range(N)]
-lst2 = [list(map(int,sys.stdin.readline().split())) for _ in range(M)]
-word = []
+lst1 = list(map(str,sys.stdin.readline().rstrip()))
+lst2 = list(map(str,sys.stdin.readline().rstrip()))
+l1_len = len(lst1)
+l2_len = len(lst2)
+dp = [[0 for _ in range(l1_len)] for _ in range(l2_len+1)]
+
+# print(lst1)
+# print(lst2)
+
+for i in range(l2_len):
+    for j in range(l1_len):
+        if lst1[j] == lst2[i]:
+            dp[i][j] = i+1
+            dp[-1][j] = 1
+        if lst1[j] == '?':
+            dp[i][j] = i+1
+
+cal = fail(lst2)
+
+
+# for i in dp:
+#     print(i)
+    
+    
 ans = 0
-for i in range(1,len(lst)):
-    word.append([lst[i][0]-lst[i-1][0] , lst[i][1]-lst[i-1][1]])
-len_word = len(word)    
+i = 0
 
-cal2 = []
-for i in range(1,len(lst2)):
-    cal2.append([lst2[i][0]-lst2[i-1][0] , lst2[i][1]-lst2[i-1][1]])
-
-for i in range(4):
-    cal = 0
-    snake =  Rotation(cal2,i)
-    cal = KMP(snake)
-    ans += cal
-
-    snake = lst_rev(snake)
-    ans += KMP(snake)
+while i < l1_len:
+    x = i
+    y = 0
+    if dp[y][x] != 0:
+        while y < l2_len and x < l1_len:
+            if dp[y][x] == l2_len:
+                i = x+1
+                y = cal[y]
+                ans+=1
+                break
+                
+            if dp[y][x] != 0:
+                x+=1
+                y+=1
+            else:
+                i+=1
+                x = cal[y]
+                break
+    else:
+        i+=1
+    
+    if x >= l1_len:
+        break
+            
 print(ans)
-
-
