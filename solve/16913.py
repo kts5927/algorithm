@@ -16,8 +16,8 @@ def fail(p):
 # test2 = 'abcdefghijklmnopqrstuvwxyabcdefghijklmnopqrstuvwxyabcdefghijklmnopqrstuvwxyabcdefghijklmnopqrstuvwxyabcd'
 # test1 = 'dlx??g?mourd??itwm?j??vt?y?k??n?dtuad?xw?pimfw?bipfta?dol?rqqpv?z?lq?m??ctnk??????w?jjcfqnpl?hv?ah?p'
 # test2 = 'wsxz'
-# test1 = 'winlose???winl???w??'
-# test2 = 'win'
+test1 = 'winlose???winl???w??'
+test2 = 'win'
 # test1 = '??????a?????'
 # test2 = 'aaaaa'
 # test1 = '???????c???????'
@@ -30,19 +30,29 @@ def fail(p):
 # test2 = 'ababa'
 # test1 = '???'
 # test2 = 'aba'
-test1 = 'abc??c??'
-test2 = 'abcba'
+# test1 = 'abc??c??'
+# test2 = 'abcba'
 
 
 
 
 lst1 = list(map(str,test1.strip()))
 lst2 = list(map(str,test2.strip()))
-start = time.time() 
+
 l1_len = len(lst1)
 l2_len = len(lst2)
-
+start = time.time() 
 LCS = [[i + 1 if lst1[j] == lst2[i] or lst1[j] == '?' else 0 for j in range(l1_len)] for i in range(l2_len)]
+LCS = []
+for i in range(l2_len):
+    row = []
+    for j in range(l1_len):
+        if lst1[j] == lst2[i] or lst1[j] == '?':
+            row.append(i + 1)
+        else:
+            row.append(0)
+    LCS.append(row)
+print(f"{time.time()-start:.4f} sec")
 cal = fail(lst2)
 i = 0
 y = 0
@@ -87,7 +97,8 @@ for i in range(l2_len-1,l1_len):
         while j > 0:
             dp[i] = max(dp[i], dp[i - l2_len + j] + 1)
             j = cal[j - 1]
-        dp[i] = max(dp[i], a + 1)    
+        dp[i] = max(dp[i], a + 1) 
+   
     
 print(cal)
 print(lst1)
@@ -95,6 +106,6 @@ print(lst2)
 for i in LCS:
     print(i)
 print(point)
+print(dp)
 print(max(dp))
 
-print(f"{time.time()-start:.4f} sec")
