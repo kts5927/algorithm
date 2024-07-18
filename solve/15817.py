@@ -1,17 +1,15 @@
 import sys
-
-N , x = map(int,sys.stdin.readline().split())
-dp = [0 for _ in range(x+1)]
-dp[0] = 1
-for i in range(N):
-    a , b = map(int,sys.stdin.readline().split())
-    for i in range(x,0,-1):
+arr = [0] * 10001
+arr[0] = 1
+N, x = map(int, sys.stdin.readline().split())
+for _ in range(N):
+    a, b = map(int, sys.stdin.readline().split())
+    for i in range(x, 0, -1):
         p = 0
-        for j in range(a,x,a):
-            if i-j >= 0:
-                dp[i] += dp[i-j]
-
-
-print(dp[x])
-
+        for j in range(b):
+            p += a
+            if i - p < 0:
+                break
+            arr[i] += arr[i - p]
+print(arr[x])
 
