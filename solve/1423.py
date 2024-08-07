@@ -1,39 +1,37 @@
 import sys
-from collections import deque
+import heapq
+
 N = int(sys.stdin.readline())
+level = list(map(int,sys.stdin.readline().split())) 
+Str = list(map(int,sys.stdin.readline().split()))
+Day = int(sys.stdin.readline())
 
-arr = [[[0] for _ in range(N)] for _ in range(N)]
-edge = [[] for _ in range(N+1)]
-visited = [0 for _ in range(N+1)]
-past = [False for _ in range(N+1)]
-seq = deque()
+cal = [[0]*len(level) for _ in range(min(len(level),Day))]
 
-for i in range(N):
-    arr[i] = list(map(int,sys.stdin.readline().strip()))
-for i in range(N):
-    for j in range(N):
-        if arr[i][j] == 1:
-            edge[j+1].append(i+1)
-            visited[i+1] +=1
+for i in range(len(cal)):
+    for j in range(len(cal[0])):
+        if j > i:
+            cal[i][j-i] = (Str[j]-Str[i]) / (j-i)
 
-rutebreaker = True
-while past.count(False) != 1:
-    for i in range(N,0,-1):
-        if visited[i] == 0 and  not past[i]:
-            seq.append(i)
-            past[i] = True
-            for j in range(len(edge[i])):
-                visited[edge[i][j]] -= 1
-            break
-    if past.count(True) == visited.count(0)-1 and past.count(True) != N:
-        rutebreaker = False
+heap = []
+for i in range(len(cal)):
+    for j in range(len(cal[0])):
+        if cal[i][j] > 0:
+            heapq.heappush(heap,[-cal[i][j],i,j])
+
+while heap:
+    value, s, e = heapq.heappop(heap)
+    
+    if level[s] != 0:
+        mx = min(Day//e , level[s])
+        level[s] -= mx
+        level[s+e] += mx
+        Day -= mx*e
+    
+    if Day == 0:
         break
-
-ans = [0 for _ in range(N+1)]
-if rutebreaker:
-    for i in range(1,N+1):
-        a = seq.pop()
-        ans[a] = i 
-
-    print(*ans[1:])
-else : print(-1)
+ans = 0
+for i in range(len(level)):
+    ans += level[i]*Str[i]
+    
+print(ans)
