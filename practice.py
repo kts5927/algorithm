@@ -1,5 +1,3 @@
-import sys
-
 # 백준 111 제목 티어 https://www.acmicpc.net/problem/
 # 오늘의 잔디 추천 :  https://www.acmicpc.net/problem/
 # 1562
@@ -16,4 +14,20 @@ import sys
 # from itertools import permutations
 # print(3%2)
 
-print( [list(map(int,sys.stdin.readline().split())) for i in range(4)])
+import sys;input=lambda:sys.stdin.readline().strip('\n')
+MIS = lambda: map(int,input().split())
+
+n, m, x, y = MIS()
+adj = [set() for i in range(n+1)]
+for i in range(m):
+    a, b = MIS()
+    adj[a].add(b)
+    adj[b].add(a)
+pos = {x}
+for i in range(y):
+    npos = set()
+    for x in pos: npos|= adj[x]
+    pos = npos
+
+if pos: print(*sorted(pos))
+else: print(-1)
