@@ -14,20 +14,9 @@
 # from itertools import permutations
 # print(3%2)
 
-import sys;input=lambda:sys.stdin.readline().strip('\n')
-MIS = lambda: map(int,input().split())
 
-n, m, x, y = MIS()
-adj = [set() for i in range(n+1)]
-for i in range(m):
-    a, b = MIS()
-    adj[a].add(b)
-    adj[b].add(a)
-pos = {x}
-for i in range(y):
-    npos = set()
-    for x in pos: npos|= adj[x]
-    pos = npos
+graph = [[100] * (2 * 2) for _ in range(2 * 2)]
 
-if pos: print(*sorted(pos))
-else: print(-1)
+for i in graph:
+    print(i)
+
