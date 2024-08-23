@@ -15,8 +15,6 @@
 # print(3%2)
 
 
-graph = [[100] * (2 * 2) for _ in range(2 * 2)]
-
-for i in graph:
-    print(i)
+lst = [1,2,3,4,5,6]
+print(lst[:3])
 
