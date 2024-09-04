@@ -15,6 +15,6 @@
 # print(3%2)
 
 
-lst = [1,2,3,4,5,6]
-print(lst[:3])
+w,h = map(int,input().split())
 
+print(int(w*h*0.5))
