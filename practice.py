@@ -14,7 +14,21 @@
 # from itertools import permutations
 # print(3%2)
 
-
-w,h = map(int,input().split())
-
-print(int(w*h*0.5))
+T = int(input())
+for _ in range(T):
+    N = int(input())
+    K = 0
+    D = 0
+    A = 0
+    Mission = []
+    for i in range(N):
+        Mission.append(list(map(int,input().split())))
+        
+    k,d,a = map(int,input().split())
+    
+    money = 0
+    for i in Mission:
+        mission = k*i[0] - d*i[1] + a*i[2]
+        if  mission > 0:
+            money += mission
+    print(money)
