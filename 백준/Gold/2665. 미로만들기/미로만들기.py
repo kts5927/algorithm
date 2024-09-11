@@ -1,37 +1,28 @@
 import sys
 from collections import deque
-n = int(sys.stdin.readline())
-table = [list(map(int,sys.stdin.readline().strip())) for _ in range(n)]
-shadow = [[float("inf")]*n for _ in range(n)]
-shadow[0][0] = 0
-route = deque([[0, 0]])
-while route:
-    
-    x,y = route.popleft()
-    if x < n-1  and shadow[x+1][y] > shadow[x][y] :
-        if table[x+1][y] == 0 :
-            shadow[x+1][y] = min(shadow[x][y] + 1,shadow[x+1][y])
-        elif table[x+1][y] == 1:
-            shadow[x+1][y] = shadow[x][y]
-        route.append([x+1,y])    
-    if y < n-1 and shadow[x][y+1] > shadow[x][y]:
-        if table[x][y+1] == 0 :
-            shadow[x][y+1] = min(shadow[x][y] + 1,shadow[x][y+1])
-        elif table[x][y+1] == 1:
-            shadow[x][y+1] = shadow[x][y]
-        route.append([x,y+1])
-    if x > 0  and shadow[x-1][y] > shadow[x][y] :
-        if table[x-1][y] == 0 :
-            shadow[x-1][y] = min(shadow[x][y] + 1,shadow[x-1][y])
-        elif table[x-1][y] == 1:
-            shadow[x-1][y] = shadow[x][y]
-        route.append([x-1,y])
-    if y >0 and shadow[x][y-1] > shadow[x][y]:
-        if table[x][y-1] == 0 :
-            shadow[x][y-1] = min(shadow[x][y] + 1,shadow[x][y-1])
-        elif table[x][y-1] == 1:
-            shadow[x][y-1] = shadow[x][y]
-        route.append([x,y-1])
-        
 
-print(shadow[n-1][n-1])
+n = int(input())
+maze = [list(map(int,sys.stdin.readline().strip())) for _ in range(n)]
+cal = [[n**2]*n for _ in range(n)]
+cal[0][0] = 0
+
+dx = [1,-1,0,0]
+dy = [0,0,1,-1]
+
+deq = deque()
+deq.append([0,0,0])
+
+while deq:
+    
+    x,y,count = deq.popleft()
+    
+    for i in range(4):
+        X = x+dx[i]
+        Y = y+dy[i]
+        if 0 <= X < n and 0 <= Y < n:
+            new_count = count + (1 if maze[Y][X] == 0 else 0)
+            if new_count < cal[Y][X]:
+                cal[Y][X] = new_count
+                deq.append([X, Y, new_count])
+
+print(cal[-1][-1])
