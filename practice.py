@@ -14,7 +14,13 @@
 # from itertools import permutations
 # print(3%2)
 
-n = int(input())
-for i in range(n):
-    A,B,C = map(int,input().split())
-    print(A*(C-1)+B)
+N = int(input())
+count = 0
+while N != 1:
+    if N % 2 == 0:
+        N = N//2
+    else:
+        N = N*3 + 1
+    count += 1
+    
+print(count)
