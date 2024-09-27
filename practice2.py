@@ -1,88 +1,51 @@
-import sys
-import math
-input = sys.stdin.readline
+import numpy as np
 
+# Given constants for total conditions (stagnation conditions)
+A = 0.000685468  # Area in m^2
+Po = 7.76*10**6  # Total Pressure in Pa
+To = 473  # Total Temperature in K
+gamma = 1.261  # Specific heat ratio for air
+R = 508.13  # Specific gas constant for air in J/(kg·K)
 
-def get_tree_length():
-    if N & (N-1) == 0:
-        return 2*N
-    else:
-        return pow(2, math.ceil(math.log(N, 2)) + 1)
+# Target mass flow rate
+target_mass_flow_rate = 1.86  # kg/s
 
+# Convergence criteria
+tolerance = 0.0001  # Allowable error in mass flow rate
+max_iterations = 100  # Maximum number of iterations
 
-def initialize(index, start, end):
-    if start == end:
-        segment[index] = nums[start]
-        return
+# Initial guess for Mach number
+Mach = 0.5
+step_size = 0.1  # Adjustment step for Mach number
 
-    mid = (start + end)//2
-    initialize(index*2, start, mid)
-    initialize(index*2+1, mid+1, end)
-    segment[index] = segment[index*2] + segment[index*2+1]
+# Iterative calculation
+for iteration in range(max_iterations):
+    # Calculate static temperature from total temperature using isentropic relation
+    T = To / (1 + ((gamma - 1) / 2) * Mach**2)
+    
+    # Calculate static pressure from total pressure using isentropic relation
+    P = Po / (1 + ((gamma - 1) / 2) * Mach**2) ** (gamma / (gamma - 1))
+    
+    # Calculate density using the ideal gas law
+    rho = P / (R * T)
+    
+    # Calculate the current mass flow rate for the given Mach number
+    m_dot = (A * P / (T ** 0.5)) * ((gamma / R) ** 0.5 * Mach) * (1 + ((gamma - 1) / 2) * Mach**2) ** (-(gamma + 1) / (2 * (gamma - 1)))
+    
+    # Calculate the error between the calculated and target mass flow rates
+    error = target_mass_flow_rate - m_dot
+    
+    # Check for convergence
+    if abs(error) < tolerance:
+        break
+    
+    # Adjust Mach number based on error direction and magnitude
+    Mach += step_size * error / abs(error)
+    
+    # Ensure Mach number does not go negative
+    if Mach <= 0:
+        Mach = 0.1
 
-
-def update(index, start, end, left, right, to_added):
-    prograte(index, start, end)
-
-    if right < start or end < left:
-        return
-
-    if left <= start and end <= right:
-        segment[index] += (end - start + 1)*to_added
-
-        if start != end:
-            lazy[index*2] += to_added
-            lazy[index*2+1] += to_added
-
-        return
-
-    mid = (start + end)//2
-    update(index*2, start, mid, left, right, to_added)
-    update(index*2+1, mid+1, end, left, right, to_added)
-    segment[index] = segment[index*2] + segment[index*2+1]
-
-
-def query(index, start, end, left, right):
-    prograte(index, start, end)
-
-    if right < start or end < left:
-        return 0
-
-    if left <= start and end <= right:
-        return segment[index]
-
-    mid = (start + end)//2
-    return query(index*2, start, mid, left, right) + query(index*2+1, mid+1, end, left, right)
-
-
-def prograte(index, start, end):
-    if lazy[index] != 0:
-        segment[index] += (end - start + 1)*lazy[index]
-
-        if start != end:
-            lazy[index*2] += lazy[index]
-            lazy[index*2+1] += lazy[index]
-
-        lazy[index] = 0
-
-
-if __name__ == '__main__':
-    N, M, K = map(int, input().split())
-
-    nums = [-1] + [int(input()) for _ in range(N)]
-
-    tree_length = get_tree_length()
-    segment = [0]*tree_length
-    lazy = [0]*tree_length
-    initialize(1, 1, N)
-
-    for _ in range(M+K):
-        cur = list(map(int, input().split()))
-
-        if cur[0] == 1:
-            _, b, c, d = map(int, cur)
-            update(1, 1, N, b, c, d)
-
-        else:
-            _, b, c = map(int, cur)
-            print(query(1, 1, N, b, c))
+# Output the final results including Mach number, static pressure, static temperature, density, and mass flow rate
+Mach, P, T, rho, m_dot, iteration
+print()

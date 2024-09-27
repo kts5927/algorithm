@@ -15,12 +15,16 @@
 # print(3%2)
 
 N = int(input())
-count = 0
-while N != 1:
-    if N % 2 == 0:
-        N = N//2
+lst = list(map(str,input().strip()))
+compare = ['g','o','r','i']
+point = 0
+for i in lst:
+    if i == compare[point]:
+        point += 1
     else:
-        N = N*3 + 1
-    count += 1
-    
-print(count)
+        point = 0
+    if point == 4:
+        print('YES')
+        break
+if point != 4:
+    print('NO')
