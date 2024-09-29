@@ -1,4 +1,4 @@
-lst = [[0]*101 for _ in range(101)]
+lst = [[0]*1001 for _ in range(1001)]
 
 N = int(input())
 for k in range(N):
@@ -9,9 +9,9 @@ for k in range(N):
             lst[i+a][j+b] = k+1
 
 
-ans = [0]*102
-for i in range(101):
-    for j in range(101):
+ans = [0]*1002
+for i in range(1001):
+    for j in range(1001):
         ans[lst[i][j]] += 1
         
 for i in range(N):
