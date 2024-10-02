@@ -1,14 +1,15 @@
 def solution(clothes):
-
-    dic = {}
-    for cloth , type_ in clothes:
-        if type_ in dic.keys():
-            dic[type_] += [cloth]
-        else : 
-            dic[type_] = [cloth]
-            
     answer = 1
-    for _ , lst in dic.items():
-        answer *= (len(lst) + 1)
-    
-    return answer - 1
+    hash = {}
+    for i in clothes:
+        if i[1] in hash:
+            hash[i[1]] += 1
+        else:
+            hash[i[1]] = 1
+    print(hash)
+    for i in hash:
+        print(hash[i])
+        answer *= hash[i]+1
+        
+    answer -= 1
+    return answer
