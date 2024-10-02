@@ -1,9 +1,7 @@
-import sys
+import math
 
-N, M = map(int, sys.stdin.readline().split())
-X, Y = (N, M) if N > M else (M, N)
+a, b = map(int,input().split())
+cal = []
 
-while X%Y:
-    X, Y = Y, X%Y
 
-sys.stdout.write(''.join(['1']*Y))
+print(''.join('1')*math.gcd(a,b))
