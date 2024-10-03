@@ -1,11 +1,12 @@
 def solution(id_list, report, k):
-    answer = [0]*len(id_list)
+    id_len = len(id_list)
+    answer = [0]*id_len
     
     index = {}
-    for i in range(len(id_list)):
+    for i in range(id_len):
         index[id_list[i]] = i 
         
-    cal = [[] for _ in range(len(id_list))]
+    cal = [[] for _ in range(id_len)]
     for i in report:
         a,b = map(str,i.split())
         if a not in cal[index[b]]:
