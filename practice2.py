@@ -1,57 +1,65 @@
-# import time
-
-# def fibo(n):
-#     if n == 1:
-#         return 1
-#     elif n == 2:
-#         return 2
-#     else:
-#     	return fibo(n-1) + fibo(n-2)
-# start_time = time.time()
-
-# # 실행할 코드
-# print(fibo(40))
-
-# end_time = time.time()
-# print(f"실행 시간: {end_time - start_time}초")
-
-
-def solution(n, k):
-    answer = 0
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))  # 각 노드는 자기 자신을 부모로 초기화
+        self.rank = [0] * n  # 트리의 높이(랭크) 저장
     
+    def find(self, u):
+        if self.parent[u] != u:
+            self.parent[u] = self.find(self.parent[u])  # 경로 압축
+        return self.parent[u]
     
-    # 소수 만들어서 hash로 저장
-    prime = [i for i in range(10000)]
-    for i in range(2,10000):
-        for j in range(2,10000//i):
-            if prime[i*j] != 0:
-                
-                prime[i*j] = 0
-                
-    prime = set(prime)
-    prime.remove(0)
-    prime.remove(1)
-    
-    # 진수 변환
-    change = []
-    while n > k:
-        change.append(n%k)
-        n //= k
-    change.append(n)
-    change.reverse()
-    
-    
-    #계산
-    cal = []
-    change.append(0)
-    for i in change:
-        if i != 0:
-            cal.append(str(i))   
-        else:
-            num = int(''.join(cal))
-            if num in prime:
-                answer += 1
-            cal = []
-    return answer
+    def union(self, u, v):
+        root_u = self.find(u)
+        root_v = self.find(v)
+        
+        if root_u != root_v:
+            # 트리의 높이가 낮은 쪽을 높은 쪽에 붙인다 (랭크에 따라 union)
+            if self.rank[root_u] > self.rank[root_v]:
+                self.parent[root_v] = root_u
+            elif self.rank[root_u] < self.rank[root_v]:
+                self.parent[root_u] = root_v
+            else:
+                self.parent[root_v] = root_u
+                self.rank[root_u] += 1
 
-print(solution(110011, 10))
+# 크루스칼 알고리즘 구현
+def kruskal(graph, V):
+    # 결과 저장 (MST에 포함된 간선)
+    mst = []
+    
+    # 간선을 가중치 기준으로 정렬
+    edges = sorted(graph, key=lambda x: x[2])
+
+    # 유니온-파인드 자료 구조 초기화
+    uf = UnionFind(V)
+
+    # 간선들을 순회하면서 MST 구성
+    for u, v, weight in edges:
+        # u와 v가 같은 트리에 속해 있지 않으면, 간선을 추가하고 union
+        if uf.find(u) != uf.find(v):
+            uf.union(u, v)
+            mst.append((u, v, weight))
+    
+    return mst
+
+# 그래프 표현: (출발 노드, 도착 노드, 가중치) 형태로 간선 정보 저장
+graph = [
+    (0, 1, 2),  # 0번 노드에서 1번 노드로 가는 가중치 2
+    (0, 3, 6),  # 0번 노드에서 3번 노드로 가는 가중치 6
+    (1, 3, 8),  # 1번 노드에서 3번 노드로 가는 가중치 8
+    (1, 2, 3),  # 1번 노드에서 2번 노드로 가는 가중치 3
+    (2, 3, 5),  # 2번 노드에서 3번 노드로 가는 가중치 5
+    (2, 4, 7),  # 2번 노드에서 4번 노드로 가는 가중치 7
+    (3, 4, 9)   # 3번 노드에서 4번 노드로 가는 가중치 9
+]
+
+# 노드의 개수
+V = 5
+
+# 크루스칼 알고리즘을 사용하여 최소 신장 트리를 구합니다.
+mst = kruskal(graph, V)
+
+# 결과 출력
+print("최소 신장 트리의 간선들:")
+for u, v, weight in mst:
+    print(f"({u}, {v}) - 가중치: {weight}")
