@@ -1,26 +1,25 @@
-import sys
+import itertools
 
-def DFS(num, cal, used_digits):
-    if cal > 987654321:
-        return float('inf')
+def find_next_larger_number(N):
+    digits = list(range(1, 10))
+    N_str = str(N)
+    length = len(N_str)
     
-    min_val = float('inf')
-    if cal > num:
-        min_val = cal
+    for perm in itertools.permutations(digits, length):
+        num = int(''.join(map(str, perm)))
+        if num > N:
+            return num
     
-    for i in range(1, 10):
-        if i not in used_digits:
-            used_digits.add(i)
-            cal_next = DFS(num, cal * 10 + i, used_digits)
-            min_val = min(min_val, cal_next)
-            used_digits.remove(i)  # 백트래킹
-            
-    return min_val
+    for perm in itertools.permutations(digits, length + 1):
+        num = int(''.join(map(str, perm)))
+        return num
 
-for line in sys.stdin:
-    N = int(line.strip())
-    result = DFS(N, 0, set())
-    if result == float('inf'):
-        print(0)
-    else:
+while True:
+    try:
+        N = int(input().strip())
+        result = find_next_larger_number(N)
+        if result == None:
+            result = 0
         print(result)
+    except EOFError:
+        break
