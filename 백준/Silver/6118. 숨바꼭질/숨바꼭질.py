@@ -1,27 +1,56 @@
 from collections import deque
 
-N , M = map(int,input().split())
-
-node = [[] for _ in range(N+1)]
-for i in range(M):
-    a ,b = map(int,input().split())
-    node[a].append(b)
-    node[b].append(a)
+def solution():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
     
-que = deque()
-que.append(1)
+    n = int(data[0])
+    m = int(data[1])
+    
 
-dist = [0 for _ in range(N+1)]
-dist[1] = 1
+    graph = [[] for _ in range(n + 1)]
+    
 
-while que:
-    location = que.popleft()
+    index = 2
+    for _ in range(m):
+        x = int(data[index])
+        y = int(data[index + 1])
+        graph[x].append(y)
+        graph[y].append(x)
+        index += 2
+    
+ 
+    def bfs(start):
+        distances = [-1] * (n + 1) 
+        queue = deque([start])
+        distances[start] = 0 
+        
+        while queue:
+            current = queue.popleft()
+            for neighbor in graph[current]:
+                if distances[neighbor] == -1:  
+                    queue.append(neighbor)
+                    distances[neighbor] = distances[current] + 1 
+        
+        return distances
+    
+   
+    distances = bfs(1)
+    
 
-    for i in node[location]:
-        if dist[i] == 0:
-            que.append(i)
-            dist[i] = dist[location] + 1
+    max_distance = max(distances)
+    
+   
+    longDis= [i for i, d in enumerate(distances) if d == max_distance]
+    
 
-Max = max(dist)
-dis = [i for i,d in enumerate(dist) if d == Max]
-print(min(dis) , Max-1 , len(dis))
+    longD = min(longDis)
+    
+   
+    count_farthest = len(longDis)
+    
+
+    print(longD, max_distance, count_farthest)
+
+solution()
