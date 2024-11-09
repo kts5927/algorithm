@@ -15,38 +15,28 @@ for i in range(N-1):
     Node[b].append(a)
     
 lst = list(map(int,sys.stdin.readline().split()))
-numb = [0 for _ in range(N)]
-distance = [0 for _ in range(N+1)]
 child = [[] for _ in range(N+1)]
 visited = [0 for _ in range(N+1)]
-visited[1] = 1
+visited[lst[0]] = 1
 que = deque()
-que.append([lst[0],0])
+que.append(lst[0])
 
 while que:
-    location, dist = que.popleft()
-    numb[dist] += 1
-    distance[location] = dist
+    location = que.popleft()
         
     for i in Node[location]:
         if visited[i] == 0:
-            que.append([i,dist+1])
+            que.append(i)
             child[location].append(i)
             visited[i] = 1
-    
+    1
 visited = [0 for _ in range(N+1)]
 visited[1] = 1
 check = [0 for _ in range(N)]
 
-print(child)
 pointer = 1
 for i in lst:
-    
-    if numb[distance[i]] > 0:
-        numb[distance[i]] -= 1
-    else:
-        fail()
-    
+
     a = lst[pointer:pointer + len(child[i])]
     a.sort()
     child[i].sort()
