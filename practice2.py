@@ -1,11 +1,14 @@
-def eval_check(expression):
-    if not expression.isdigit():
-        raise ValueError("정수만 입력할 수 있습니다.")
-    
-    print(eval(expression))
+import time
+import random
+from collections import deque
 
-try:
-    result = eval_check("123") 
-    result = eval_check("123.45")
-except ValueError as e:
-    print(e)
+start_time = time.time()
+lst = []
+que = deque()
+for _ in range(500000):
+    # lst.append(random.randrange(1,100000))
+    que.append(random.randrange(1,5000))
+    que.popleft()
+end_time = time.time()
+
+print("50만번 append 수행 시간:", end_time - start_time, "초")
