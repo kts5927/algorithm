@@ -55,10 +55,10 @@ def solve():
             if i == 0 and j == n - 1:
                 continue
 
-            while (p + 1) % n != j and area(hull[i], hull[j], hull[p]) <= area(hull[i], hull[j], hull[(p + 1) % n]):
+            while area(hull[i], hull[j], hull[p]) <= area(hull[i], hull[j], hull[(p + 1) % n]):
                 p = (p + 1) % n
 
-            while (q + 1) % n != i and area(hull[i], hull[j], hull[q]) <= area(hull[i], hull[j], hull[(q + 1) % n]):
+            while area(hull[i], hull[j], hull[q]) <= area(hull[i], hull[j], hull[(q + 1) % n]):
                 q = (q + 1) % n
 
             now = area(hull[i], hull[j], hull[p]) + area(hull[i], hull[j], hull[q])
