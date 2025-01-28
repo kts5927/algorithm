@@ -1,7 +1,10 @@
+import sys
+input = sys.stdin.readline
+
 score = [0,':',0]
 N = int(input())
 for i in range(N):
-    a = str(input())
+    a = str(input().strip())
     if a == 'D':
         score[0] += 1
     else:
