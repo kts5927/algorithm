@@ -1,4 +1,6 @@
 from collections import deque
+import sys
+input = sys.stdin.readline
 
 def bfs(F, S, G, U, D):
     queue = deque([(S, 0)])  
