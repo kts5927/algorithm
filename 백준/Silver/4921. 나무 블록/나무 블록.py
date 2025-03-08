@@ -12,14 +12,11 @@ next = {
 }
 num = 0
 while True:
-    N = int(input())
-    if N == 0:
-        break
 
-    
     num += 1
-    
-    block = list(str(N).strip())
+    block = list(input().rstrip())
+    if block == ['0']:
+        break
     if block[0] != '1' or block[-1] != '2':
         print(f'{num}.','NOT')
         continue
