@@ -1,20 +1,16 @@
-Table = \
-[['A','G','C','T']
-,['A','C','A','G']
-,['C','G','T','A']
-,['A','T','C','G']
-,['G','A','G','T']]
+import sys
+input = sys.stdin.readline
 
-
-
+num = {'A': 0, 'G': 1, 'C': 2, 'T': 3}
+change = [[0, 2, 0, 1],
+          [2, 1, 3, 0],
+          [0, 3, 2, 1],
+          [1, 0, 1, 3]]
 
 N = int(input())
-DNA = list(map(str,input().strip()))
-now = DNA[-1]
-location = N-1
-while location > 0:
-    
-    location -= 1
-    x = Table[0].index(DNA[location])
-    now = Table[x+1][Table[0].index(now)]
-print(now)
+DNA = input().strip()
+now = num[DNA[-1]]
+for c in range(N - 2, -1, -1):
+    now = change[num[DNA[c]]][now]
+
+print("AGCT"[now])
