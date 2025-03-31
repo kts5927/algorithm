@@ -1,6 +1,3 @@
-import sys
-input = sys.stdin.readline
-
 def cal(a,b,t):
     cal = (a+t)%(2*b)
     if cal > b:
