@@ -1,7 +1,19 @@
-N = int(input())
-lst = list(map(int,input().split()))
-ans = 0
-for i in range(len(lst)):
-    for j in range(i,len(lst)):
-        ans += abs(lst[i]-lst[j])
-print(ans)
+from collections import Counter
+
+while True:
+    try:
+        a = input()
+        b = input()
+
+        count_a = Counter(a)
+        count_b = Counter(b)
+
+        result = []
+
+        for ch in 'abcdefghijklmnopqrstuvwxyz':
+            common = min(count_a[ch], count_b[ch])
+            result.extend([ch] * common)
+
+        print(''.join(result))
+    except EOFError:
+        break
