@@ -8,7 +8,7 @@ def sol():
     for a in range(1, n + 1):
         for b in range(1, n + 1):
             if a == b:
-                graph[a][b] = 0
+                graph[a][b] = float('inf')
 
     for _ in range(m):
         a, b, c = map(int, input().split())
@@ -19,12 +19,9 @@ def sol():
             for b in range(1, n + 1):
                 graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
 
-    fw = [[0]*(n+1) for _ in range(n+1)]
     ans = float('inf')
     for i in range(1,n+1):
-        for j in range(i,n+1):
-            if i != j:
-                ans = min(ans,graph[i][j] + graph[j][i])
+        ans = min(ans,graph[i][i])
 
     if ans != float('inf'):
         print(ans)
